@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
-import PublicAccess from "@/lib/models/PublicAccess";
 import Project from "@/lib/models/Project";
 import { connectDB } from "@/lib/db";
 import { requireAuth } from "@/lib/requireAuth";
 export async function GET(_: Request, { params }: { params: Promise<{ token: string }> }) {
-  const user = await requireAuth()
+  //const user = await requireAuth()
   await connectDB();
      const { token } = await params;
 
@@ -29,7 +28,7 @@ export async function GET(_: Request, { params }: { params: Promise<{ token: str
       status: project.status,
       updatedAt: project.updatedAt,
       launchDate: project.createdAt ?? null,
-      primaryContact: user.name ?? null,
+      primaryContact: null,
     },
   });
 }
