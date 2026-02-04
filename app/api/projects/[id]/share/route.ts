@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import Project from "@/lib/models/Project";
 import crypto from "crypto";
+import { requireAuth } from "@/lib/requireAuth";
 
 export async function POST(
   req: Request,
@@ -9,6 +10,7 @@ export async function POST(
 ) {
   await connectDB();
   const { id } = await params;
+  const user = await requireAuth()
 
   const project = await Project.findById(id
 
@@ -30,6 +32,6 @@ export async function POST(
 
   return NextResponse.json({
     token: project.publicToken,
-    url: `${process.env.NEXT_PUBLIC_APP_URL}/public/projects/${project.publicToken}`,
+    url: `${process.env.NEXT_PUBLIC_APP_URL}/public/projects/${project.publicToken}?email=${user.email}`,
   });
 }
