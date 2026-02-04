@@ -11,7 +11,7 @@ import { NeedsFromYou } from "@/components/client-view/NeedsFromYou";
 import { UpdatesTimeline } from "@/components/client-view/UpdatesTimeline";
 import { ProjectSidebar } from "@/components/client-view/ProjectSidebar";
 import { HelpCard } from "@/components/client-view/HelpCard";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 
 type Project = {
   _id: string;
@@ -36,6 +36,8 @@ export default function ClientProjectPage() {
   const [updates, setUpdates] = useState<Update[]>([]);
   const [loading, setLoading] = useState(true);
   const { slug } = useParams<{ slug: string }>();
+   const searchParams = useSearchParams();
+    const email = searchParams.get("email") as string;
 
   useEffect(() => {
     async function load() {
@@ -73,8 +75,9 @@ export default function ClientProjectPage() {
     );
   }
 
+
+
   const latestUpdate = updates[0];
-  console.log(latestUpdate);
   return (
     <div className="min-h-screen bg-background">
       <ClientHeader token={slug} />
@@ -94,7 +97,7 @@ export default function ClientProjectPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main column */}
           <div className="lg:col-span-2 space-y-8">
-            <NeedsFromYou blockers={latestUpdate?.blockers} />
+            <NeedsFromYou blockers={latestUpdate?.blockers} contactEmail={email} />
             <UpdatesTimeline updates={updates} />
           </div>
 
@@ -102,7 +105,7 @@ export default function ClientProjectPage() {
           <div className="space-y-6">
             <ProjectSidebar
               launchDate={project.launchDate}
-              contactName={project.primaryContact}
+              contactName={email}
             />
             <HelpCard />
           </div>
