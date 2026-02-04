@@ -70,7 +70,7 @@ export function ProjectCard({
       const res = await axios.post(
         `/api/projects/${id}/share`
       );
-      window.open(res.data.url+'?user=freelancer', "_blank");
+      window.open(res.data.url+'&user=freelancer', "_blank");
     } catch {
       alert("Failed to open public view");
     } finally {
