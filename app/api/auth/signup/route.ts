@@ -33,9 +33,19 @@ export async function POST(req: Request) {
   });
 
   const token = signToken({ userId: user._id.toString() });
-  setAuthCookie(token);
 
-  return NextResponse.json({
-    user: { id: user._id, name: user.name, email: user.email },
+  // ✅ Create response FIRST
+  const res = NextResponse.json({
+    user: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+    },
   });
+
+  // ✅ Attach cookie to response
+  setAuthCookie(res, token);
+
+  // ✅ Return response
+  return res;
 }

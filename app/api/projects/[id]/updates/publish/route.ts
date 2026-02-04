@@ -8,7 +8,7 @@ import { sendPush } from "@/lib/push";
 
 export async function POST(
   _: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const user = await requireAuth();
   if (!user) {
